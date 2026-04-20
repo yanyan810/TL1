@@ -20,5 +20,5 @@ def register():
 def unregister():
     print("レベルエディタが無効化されました。")
 
-if __name__ == "__main__":
-    register()
+#if __name__ == "__main__":
+#    register()

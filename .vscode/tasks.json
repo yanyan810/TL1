@@ -1,0 +1,14 @@
+{
+"version": "2.0.0",
+"tasks": [
+{
+"label": "copy addon",
+"type": "shell",
+"command": "${workspaceFolder}/copy_addon.bat",
+"problemMatcher": [],
+"runOptions": {
+"runOn": "folderOpen"
+}
+}
+]
+}
