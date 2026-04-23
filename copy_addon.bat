@@ -1,6 +1,35 @@
 @echo off
+setlocal
 
-copy /Y "C:\Users\k024g\OneDrive\デスクトップ\TL1\level_editor.py" ^
-"C:\Users\k024g\AppData\Roaming\Blender Foundation\Blender\4.4\scripts\addons\level_editor.py"
+for /f "usebackq delims=" %%I in (`powershell -NoProfile -Command "[Environment]::GetFolderPath('Desktop')"`) do set "DESKTOP=%%I"
 
-echo コピー完了
+set "SRC=%DESKTOP%\TL1\level_editor.py"
+set "DST=%APPDATA%\Blender Foundation\Blender\4.4\scripts\addons\level_editor.py"
+
+echo === source ===
+echo %SRC%
+echo === destination ===
+echo %DST%
+echo.
+
+if not exist "%SRC%" (
+    echo [ERROR] source file not found
+    pause
+    exit /b 1
+)
+
+if not exist "%APPDATA%\Blender Foundation\Blender\4.4\scripts\addons\" (
+    echo [ERROR] destination folder not found
+    pause
+    exit /b 1
+)
+
+copy /Y "%SRC%" "%DST%"
+if errorlevel 1 (
+    echo [ERROR] copy failed
+    pause
+    exit /b 1
+)
+
+echo [OK] copied
+pause
