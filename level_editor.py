@@ -2,7 +2,7 @@ import bpy
 
 bl_info = {
     "name": "レベルエディタ",
-    "author": "Taro Kamata",
+    "author": "Haruhi Miyazawa",
     "version": (1, 0),
     "blender": (3, 3, 1),
     "location": "",
@@ -14,11 +14,62 @@ bl_info = {
     "category": "Object"
 }
 
+
+
+#トップバーの拡張メニュー
+class TOPBAR_MT_my_menu(bpy.types.Menu):
+    #blenderがクラスを識別するための固有文字列
+    bl_idname = "TOPBAR_MT_my_menu"
+
+    #メニューのラベルとして表示される文字列
+    bl_label = "MyMenu"
+    #著者表示用の文字列
+    bl_description = "拡張メニュー by "+bl_info["author"]
+
+    #サブメニューの描画
+    def draw(self, context):
+        
+        #トップバーの「エディターメニュー」に項目(オペレーター)を追加
+        layout = self.layout
+        layout.operator("wm.url_open_preset", text="Manual", icon="HELP")
+    
+    #既存メニューにサブメニューを追加
+    def submenu(self, context):
+        #トップバーの「エディターメニュー」にサブメニューを追加
+        self.layout.menu(TOPBAR_MT_my_menu.bl_idname)
+
+# Blenderに登録するクラスリスト
+classes = (
+    TOPBAR_MT_my_menu,
+)
+
 def register():
+    for cls in classes:
+        bpy.utils.register_class(cls)
+    #メニューに項目追加
+    bpy.types.TOPBAR_MT_editor_menus.append(TOPBAR_MT_my_menu.submenu)
     print("レベルエディタが有効化されました。")
 
 def unregister():
+    #メニューから削除
+    bpy.types.TOPBAR_MT_editor_menus.remove(TOPBAR_MT_my_menu.submenu)
+   
+   #ブレンダーからクラス削除
+    for cls in reversed(classes):
+        bpy.utils.unregister_class(cls)
+   
     print("レベルエディタが無効化されました。")
+
+
 
 #if __name__ == "__main__":
 #    register()
+
+#メニュー項目描画
+def draw_menu_manual(self, context):
+ #self : 呼び出し元のクラスインスタンス。
+ #context : カーソルを合わせたときのポップアップのカスタマイズなどに使用
+
+    #トップバーの「エディタメニュー」に項目(オペレーター)を追加
+    self.layout.operator("wm.url_open_preset", text="Manual", icon="HELP")
+
