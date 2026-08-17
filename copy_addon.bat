@@ -3,8 +3,8 @@ setlocal
 
 for /f "usebackq delims=" %%I in (`powershell -NoProfile -Command "[Environment]::GetFolderPath('Desktop')"`) do set "DESKTOP=%%I"
 
-set "SRC=%DESKTOP%\TL1\level_editor.py"
-set "DST=%APPDATA%\Blender Foundation\Blender\4.4\scripts\addons\level_editor.py"
+set "SRC=%DESKTOP%\TL1\myaddon"
+set "DST=%APPDATA%\Blender Foundation\Blender\4.4\scripts\addons\myaddon"
 
 echo === source ===
 echo %SRC%
@@ -13,7 +13,7 @@ echo %DST%
 echo.
 
 if not exist "%SRC%" (
-    echo [ERROR] source file not found
+    echo [ERROR] source folder not found
     pause
     exit /b 1
 )
@@ -24,7 +24,7 @@ if not exist "%APPDATA%\Blender Foundation\Blender\4.4\scripts\addons\" (
     exit /b 1
 )
 
-copy /Y "%SRC%" "%DST%"
+xcopy /Y /I /E "%SRC%" "%DST%"
 if errorlevel 1 (
     echo [ERROR] copy failed
     pause
